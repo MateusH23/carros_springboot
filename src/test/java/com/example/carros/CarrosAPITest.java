@@ -119,23 +119,5 @@ public class CarrosAPITest {
 		assertEquals("Fuscao Preto", c.getNome());
 		assertEquals("classicos", c.getTipo());
 		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 }
