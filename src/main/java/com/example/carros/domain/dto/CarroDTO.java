@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import com.example.carros.domain.Carro;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class CarroDTO {

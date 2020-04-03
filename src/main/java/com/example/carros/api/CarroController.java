@@ -36,10 +36,9 @@ public class CarroController {
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/{id}")
 	public ResponseEntity getCarroById(@PathVariable("id") Long id) {
-		Optional<CarroDTO> carro = carroService.getCarroById(id);
+		CarroDTO carro = carroService.getCarroById(id);
 
-		return carro.map(c -> ResponseEntity.ok(c)) // ResponseEntity::ok
-				.orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.ok(carro);
 
 		/*
 		 * return carro.isPresent() ? ResponseEntity.ok(carro.get()) :
@@ -61,13 +60,9 @@ public class CarroController {
 
 	@PostMapping
 	public ResponseEntity save(@RequestBody Carro carro) {
-		try {
-			CarroDTO c = carroService.insert(carro);
-			URI location = getUri(c.getId());
-			return ResponseEntity.created(location).build();
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		CarroDTO c = carroService.insert(carro);
+		URI location = getUri(c.getId());
+		return ResponseEntity.created(location).build();
 	}
 
 	private URI getUri(Long id) {
@@ -85,9 +80,9 @@ public class CarroController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity delete(@PathVariable("id") Long id) {
-		return carroService.delete(id) ?
-				ResponseEntity.ok().build() :
-					ResponseEntity.notFound().build();
+		carroService.delete(id);
+		
+		return ResponseEntity.ok().build();
 	}
 
 }

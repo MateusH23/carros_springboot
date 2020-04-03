@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.example.carros.api.exception.ObjectNotFoundException;
 import com.example.carros.domain.dto.CarroDTO;
 
 @Service
@@ -28,8 +29,8 @@ public class CarroService {
 	 * return carros; }
 	 */
 
-	public Optional<CarroDTO> getCarroById(Long id) {
-		return carroRepository.findById(id).map(CarroDTO::create);
+	public CarroDTO getCarroById(Long id) {
+		return carroRepository.findById(id).map(CarroDTO::create).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado!"));
 		
 		/*Optional<Carro> c = carroRepository.findById(id);
 		if(c.isPresent()) {
@@ -74,15 +75,8 @@ public class CarroService {
 		}
 	}
 
-	public boolean delete(Long id) {
-		Assert.notNull(id, "Não foi possível deletar o registro");
-		
-		Optional<Carro> carro = carroRepository.findById(id);
-		if(carro.isPresent()) {
-			carroRepository.delete(carro.get());
-			return true;
-		}
-		return false;
+	public void delete(Long id) {
+		carroRepository.deleteById(id);
 	}
 
 }
