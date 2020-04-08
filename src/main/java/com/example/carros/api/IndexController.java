@@ -1,5 +1,7 @@
 package com.example.carros.api;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,11 @@ public class IndexController {
 	@PostMapping("/login/{login}/{senha}")
 	public String getParam(@PathVariable("login") String login, @PathVariable("senha") String senha) {
 		return "Login: " + login + ", Senha: " + senha;
+	}
+	
+	@GetMapping("/userinfo")
+	public UserDetails userInfo(@AuthenticationPrincipal UserDetails user) {
+		return user;
 	}
 	
 }

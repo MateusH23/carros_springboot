@@ -27,11 +27,11 @@ public class CarrosAPITest {
 	protected TestRestTemplate rest;
 
 	private ResponseEntity<CarroDTO> getCarro(String url) {
-		return rest.getForEntity(url, CarroDTO.class);
+		return rest.withBasicAuth("user", "123").getForEntity(url, CarroDTO.class);
 	}
 
 	private ResponseEntity<List<CarroDTO>> getCarros(String url) {
-		return rest.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {
+		return rest.withBasicAuth("user", "123").exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {
 		});
 	}
 	
@@ -42,7 +42,7 @@ public class CarrosAPITest {
 		carro.setTipo("esportivos");
 		
 		// Insert
-		ResponseEntity response = rest.postForEntity("/api/v1/carros", carro, null);
+		ResponseEntity response = rest.withBasicAuth("user", "123").postForEntity("/api/v1/carros", carro, null);
 		System.out.println(response);
 		
 		// Verifica se criou
@@ -57,7 +57,7 @@ public class CarrosAPITest {
 		assertEquals("esportivos", c.getTipo());
 		
 		// Deletar o objeto
-		rest.delete(location);
+		rest.withBasicAuth("user", "123").delete(location);
 		
 		// Verifica se deletou
 		assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
@@ -99,7 +99,7 @@ public class CarrosAPITest {
 		carro.setNome("Fusca");
 		carro.setTipo("classicos");
 		
-		ResponseEntity response = rest.postForEntity("/api/v1/carros", carro, CarroDTO.class);
+		ResponseEntity response = rest.withBasicAuth("user", "123").postForEntity("/api/v1/carros", carro, CarroDTO.class);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		
 		String location = response.getHeaders().getLocation().toString();
@@ -113,7 +113,7 @@ public class CarrosAPITest {
 		c.setNome("Fuscao Preto");
 		c.setTipo("classicos");
 		
-		rest.put(location, c);
+		rest.withBasicAuth("user", "123").put(location, c);
 		
 		c = getCarro(location).getBody();
 		assertEquals("Fuscao Preto", c.getNome());
